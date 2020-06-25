@@ -1,5 +1,7 @@
 package com.example.flixter.models;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +16,11 @@ public class Movie {
     String posterPath;
     String title;
     String overview;
+    Double voteAverage;
+    String release_year;
+    Integer popularity;
+
+
 
     public Movie() {}
 
@@ -22,6 +29,9 @@ public class Movie {
         posterPath = jsonObject.getString("poster_path");
         title = jsonObject.getString("title");
         overview = jsonObject.getString("overview");
+        voteAverage = jsonObject.getDouble("vote_average");
+        release_year = jsonObject.getString("release_date").substring(0,4);
+        popularity = jsonObject.getInt("popularity");
     }
 
     public static List<Movie> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
@@ -46,5 +56,28 @@ public class Movie {
 
     public String getTitle() {
         return title;
+    }
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public String getRelease_year() {
+        return release_year;
+    }
+
+    public Integer getPopularity() {
+        return popularity;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                ", title='" + title + '\'' +
+                ", overview='" + overview + '\'' +
+                ", voteAverage=" + voteAverage +
+                ", release_year='" + release_year + '\'' +
+                ", popularity=" + popularity +
+                '}';
     }
 }
