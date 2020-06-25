@@ -89,7 +89,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 placeholder_id = R.drawable.movie_placeholder;
             }
             //render image:
-            GlideApp.with(context).load(imageURL).placeholder(placeholder_id).into(ivPoster);
+            GlideApp.with(context).load(imageURL).transform(new RoundedCornersTransformation(30, 1)).placeholder(placeholder_id).into(ivPoster);
 
 
 

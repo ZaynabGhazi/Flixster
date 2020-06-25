@@ -21,7 +21,6 @@ public class Movie {
     Integer popularity;
 
 
-
     public Movie() {}
 
     public Movie(JSONObject jsonObject) throws JSONException {
