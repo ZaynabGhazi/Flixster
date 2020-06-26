@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.telephony.ims.ImsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -25,6 +27,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import okhttp3.Headers;
 
 import static android.text.TextUtils.isEmpty;
@@ -49,7 +52,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         initSecretResources(this);
         super.onCreate(savedInstanceState);
         //view binding:
-        ActivityMovieDetailsBinding binding = ActivityMovieDetailsBinding.inflate(getLayoutInflater());
+        final ActivityMovieDetailsBinding binding = ActivityMovieDetailsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
         //unwrap intent extra using Parcels and key=class_name
@@ -63,7 +66,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tvOverview = (TextView)binding.tvOverview;
         tvPopularity = (TextView)binding.tvPopularity;
         //populate objects
-        Glide.with(this).load(movie.getBackdropPath()).placeholder(R.drawable.flicks_backdrop_placeholder).into(ivPoster);
+        Glide.with(this).load(movie.getBackdropPath()).transform(new RoundedCornersTransformation(30, 1)).placeholder(R.drawable.flicks_backdrop_placeholder).into(ivPoster);
         tvTitle.setText(movie.getTitle());
         tvYear.setText("("+movie.getRelease_year()+")");
         float voteAverage = movie.getVoteAverage().floatValue();
@@ -81,22 +84,29 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 JSONObject jsonObject= json.jsonObject;
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
-                    trailer_id = results.getJSONObject(0).getString("key");
-                    Log.i(TAG,"Results: "+results);
-                    Log.i(TAG,"Result key : "+trailer_id);
-                    //listener
-                    ivPoster.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Log.d(TAG,"clicked BDimage");
-                            Intent intent = new Intent(MovieDetailsActivity.this,MovieTrailerActivity.class);
-                            intent.putExtra("VIDEO_KEY",trailer_id);
-                            startActivity(intent);
-                        }
-                    });
+                    if (results.length()!=0) {
+                        ((ImageView)binding.playIcon).setVisibility(View.VISIBLE);
+                        trailer_id = results.getJSONObject(0).getString("key");
+                        Log.i(TAG,"Results: "+results);
+                        Log.i(TAG,"Result key : "+trailer_id);
+                        //listener
+                        ivPoster.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Log.d(TAG,"clicked BDimage");
+                                Intent intent = new Intent(MovieDetailsActivity.this,MovieTrailerActivity.class);
+                                intent.putExtra("VIDEO_KEY",trailer_id);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    else Toast.makeText(getApplicationContext(),"Trailer not available.",Toast.LENGTH_LONG).show();
 
-                } catch (JSONException e) {
+
+                }
+                catch (JSONException e) {
                     Log.e(TAG,"json exception",e);
+                    Toast.makeText(getApplicationContext(),"Trailer not available.",Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
 

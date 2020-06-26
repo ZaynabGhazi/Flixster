@@ -18,8 +18,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.flixter.GlideApp;
+import com.example.flixter.GlideApp;
 import com.example.flixter.MovieDetailsActivity;
 import com.example.flixter.R;
+import com.example.flixter.databinding.ItemMovieBinding;
 import com.example.flixter.models.Movie;
 
 import org.parceler.Parcels;
@@ -32,6 +34,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     Context context;
     List<Movie> movies;
 
+
     public MovieAdapter(Context context, List<Movie> movies) {
         this.context = context;
         this.movies = movies;
@@ -41,8 +44,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d("MovieAdapter","onCreateVH");
-        View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie,parent,false);
-        return new ViewHolder(movieView);
+        return new ViewHolder(ItemMovieBinding.inflate(LayoutInflater.from(context)));
     }
     //populate data into view through holder
     @Override
@@ -65,12 +67,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         TextView tvTitle;
         TextView tvOverview;
         ImageView ivPoster;
+        ItemMovieBinding binding;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOverview = itemView.findViewById(R.id.tvOverview);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
+        public ViewHolder( ItemMovieBinding b) {
+            super(b.getRoot());
+            binding=b;
+            tvTitle = b.tvTitle;
+            tvOverview = b.tvOverview;
+            ivPoster = b.ivPoster;
             itemView.setOnClickListener(this);
         }
 
