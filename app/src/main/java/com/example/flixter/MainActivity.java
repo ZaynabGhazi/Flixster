@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +28,7 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String NOW_PLAYING_URL=" https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+    public static  String NOW_PLAYING_URL;
     public static final String TAG="MainActivity";
 
     List<Movie> movies;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initSecretResources(this);
         //view binding:
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -74,5 +76,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+    //Hide Api Key
+    public static void initSecretResources(Context context){
+        NOW_PLAYING_URL= " https://api.themoviedb.org/3/movie/now_playing?api_key="+context.getResources().getString(R.string.movie_api_key);
     }
 }
