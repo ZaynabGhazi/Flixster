@@ -100,7 +100,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    else Toast.makeText(getApplicationContext(),"Trailer not available.",Toast.LENGTH_LONG).show();
+                    else Toast.makeText(getApplicationContext(),"Trailer not available.",Toast.LENGTH_SHORT).show();
 
 
                 }
