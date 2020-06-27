@@ -27,7 +27,6 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
 
         // resolve the player view from the layout
         YouTubePlayerView playerView = (YouTubePlayerView) binding.player;
-
         // initialize with API key stored in strings.xml
         playerView.initialize(getString(R.string.api_key), new YouTubePlayer.OnInitializedListener() {
             @Override
@@ -35,13 +34,18 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
                                                 YouTubePlayer youTubePlayer, boolean b) {
                 // do any work here to cue video, play video, etc.
                 youTubePlayer.cueVideo(videoId);
+                youTubePlayer.setFullscreen(true);
             }
+
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider,
                                                 YouTubeInitializationResult youTubeInitializationResult) {
                 // log the error
                 Log.e("MovieTrailerActivity", "Error initializing YouTube player");
             }
+
         });
+
     }
+
 }
